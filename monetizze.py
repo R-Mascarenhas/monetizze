@@ -20,6 +20,13 @@ class Loteria:      #1
         self._qntDezenas = dezena
         return self._qntDezenas
 
+    def get_totalJogos(self):
+        return self._totalJogos
+    def set_totalJogos(self, totalJogos):
+        if not(isinstance(totalJogos, int) and totalJogos > 0):
+            raise ValueError("Número inválido: {}".format(totalJogos))
+        self._totalJogos = totalJogos
+        return self._totalJogos
 
     def _get_array(self, qntDezenas):       #4
         import random
@@ -30,17 +37,10 @@ class Loteria:      #1
 
     def get_resultados(self):
         return self._resultado
-    def set_resultados(self, args):
+    def set_resultados(self):
         self._resultado = self._get_array(6)
         return self._resultado
 
-    def get_totalJogos(self):
-        return self._totalJogos
-    def set_totalJogos(self, totalJogos):
-        if not(isinstance(totalJogos, int) and totalJogos > 0):
-            raise ValueError("Número inválido: {}".format(totalJogos))
-        self._totalJogos = totalJogos
-        return self._totalJogos
 
     def get_jogos(self):
         return self._Jogos
@@ -50,7 +50,6 @@ class Loteria:      #1
         if not(len(game_unique) == len(games)):
             self.set_jogos()
 
-        games = [sorted(i) for i in games]
         games.sort()
         self._Jogos = games
         return self._Jogos
@@ -86,7 +85,7 @@ class Loteria:      #1
 dezenas = int(input("Informe o número de dezenas entre 6 e 10: "))
 jogos = int(input("Informe o número de Jogos: "))
 loteca = Loteria(dezenas, jogos)
-loteca.set_resultados(1)
+loteca.set_resultados()
 loteca.set_jogos()
 loteca.get_Confere()
 
