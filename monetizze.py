@@ -44,9 +44,12 @@ class Loteria:      #1
 
     def get_jogos(self):
         return self._Jogos
-    def set_jogos(self):                #5 FALTA UNIQUE
-        import random
+    def set_jogos(self):                #5
         games = [self._get_array(self._qntDezenas) for i in range(self._totalJogos)]
+        game_unique = [list(x) for x in set(tuple(x) for x in games)]
+        if not(len(game_unique) == len(games)):
+            self.set_jogos()
+
         games = [sorted(i) for i in games]
         games.sort()
         self._Jogos = games
@@ -60,16 +63,32 @@ class Loteria:      #1
             acertos = [num for num in self._Jogos[i] if num in self._resultado]
             results.append(len(acertos))
 
-        print("\nNúmeros sorteados: " + str(self._resultado))
-        print("\nNúmeros apostados: " + " " * self._totalJogos * 3 + "Acertos:\n")
+        HTML = ""
+        HTML = HTML + "<html><head><title>Resultados Loteria</title></head><body><h2>Loteria</h2><h4>Resultado do sorteio: "
+        HTML = HTML + str(self._resultado)
+        HTML = HTML + "<table border = 0>"
+        HTML = HTML + "<br /><br /><tr><td><h4>Jogos</td><td><h4>Dezenas sorteadas</td></tr><br /><br />"
         for i in range(self._totalJogos):
-            jogo = sorted(self._Jogos[i])
-            print(str(jogo) + "       \t\t" + str(results[i]))
+            HTML = HTML + "<tr>"
+            HTML = HTML + "<td>" + str(self._Jogos[i]) + "</td>"
+            HTML = HTML + "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + str(results[i]) + "</td>"
+            HTML = HTML + "</tr>"
+        HTML = HTML + "</table></body></html>"
+        f = open('monetizze_resultado.html', 'w')
+        f.writelines(HTML.strip(("[]")))
+        f.close()
+        import webbrowser
+        webbrowser.open("monetizze_resultado.html", new = 2)
+        return HTML.strip("[]")
 
-        return results
 
 
-loteca = Loteria(10, 30)
+dezenas = int(input("Informe o número de dezenas entre 6 e 10: "))
+jogos = int(input("Informe o número de Jogos: "))
+loteca = Loteria(dezenas, jogos)
 loteca.set_resultados(1)
 loteca.set_jogos()
 loteca.get_Confere()
+
+
+
